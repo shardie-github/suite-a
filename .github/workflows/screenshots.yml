@@ -1,6 +1,5 @@
 name: screenshots
 on:
-  workflow_dispatch: {}
   push:
     tags: ['v*.*.*']
 jobs:
@@ -10,16 +9,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
-      - run: cd tools/screenshots && npm i && npm run install:pw
-      - name: Run shots (Pages URL if available)
-        env:
-          PUBLIC_URL: ${{ steps.pages.outputs.page_url || 'http://localhost:3000' }}
-        run: |
+      - run: |
           npm i --prefix packages/shopify/epr-bluebox-app || true
           nohup node packages/shopify/epr-bluebox-app/server.js >/dev/null 2>&1 &
           sleep 2
-          cd tools/screenshots && npm run shot
+      - run: cd tools/screenshots && npm i && npx playwright install --with-deps chromium || true
+      - run: node tools/screenshots/take.js
       - uses: actions/upload-artifact@v4
+        with: { name: listing-assets, path: docs/assets/*.png }
+      - name: Attach to Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: listing-assets
-          path: docs/assets/*.png
+          files: docs/assets/*.png
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

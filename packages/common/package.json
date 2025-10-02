@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@sentry/node": "^8.26.0",
+    "pino": "^9.4.0"
+  }
+}

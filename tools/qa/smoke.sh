@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
-# Suite A smoke checks
 set -euo pipefail
 BASE="${1:-http://localhost:3000}"
-
-echo "🩺 /healthz :" && curl -fsS "$BASE/healthz" && echo
-echo "🟢 /readyz  :" && curl -fsS "$BASE/readyz" && echo
-echo "📈 /metrics :" && curl -fsS "$BASE/metrics" | head -1
-
-# /api/reports requires a session token, so we expect 401 without it
-CODE=$(curl -s -o /dev/null -w "%{http_code}" "$BASE/api/reports?from=2025-01-01&to=2025-12-31")
-echo "📄 /api/reports (no token) → expected 401, got $CODE"
-exit 0
+echo "🩺 Health:"; curl -sf "$BASE/healthz" && echo
+echo "🟢 Readyz:"; curl -sf "$BASE/readyz" && echo
+echo "📈 Metrics (first line):"; curl -sf "$BASE/metrics" | head -1
+echo "📄 Reports (401 without session):"; curl -s -o /dev/null -w "%{http_code}\n" "$BASE/api/reports?from=2025-01-01&to=2025-12-31"

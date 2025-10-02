@@ -1,4 +1,6 @@
 import fetch from "node-fetch";
+import { getOfflineToken } from "../store/offlineStore.js";
+
 export class ShopifyAdmin {
   constructor({ shop, accessToken }) { this.shop = shop; this.accessToken = accessToken; }
   async get(path){ return this.#call("GET", path); }
@@ -16,10 +18,10 @@ export class ShopifyAdmin {
     return res.json();
   }
 }
-export async function exchangeSessionForAdminToken(sessionJwt){
-  // TODO: Implement per your OAuth/storage. For now, read from ENV for dev
-  const shop = process.env.SHOPIFY_SHOP_DOMAIN; // e.g., hardonia.myshopify.com
-  const accessToken = process.env.SHOPIFY_ADMIN_TOKEN; // Dev/private token for local testing
-  if(!shop || !accessToken) throw new Error("Admin token not configured");
-  return { shop, accessToken };
+
+export async function getAdminForShop(shop){
+  const stored = getOfflineToken(shop);
+  const token = stored || process.env.SHOPIFY_ADMIN_TOKEN;
+  if(!token) throw new Error("No admin token available (install the app or set SHOPIFY_ADMIN_TOKEN)");
+  return new ShopifyAdmin({ shop, accessToken: token });
 }
