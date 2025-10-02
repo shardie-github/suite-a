@@ -1,0 +1,13 @@
+name: nightly-export
+on:
+  schedule: [{ cron: "13 2 * * *" }]
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export demo CSV
+        run: |
+          node -e "const fs=require('fs');fs.mkdirSync('artifacts',{recursive:true});fs.writeFileSync('artifacts/demo.csv','sku,qty,weightKg,fee\nBX-100,12,3.2,8.64\n');"
+      - uses: actions/upload-artifact@v4
+        with: { name: nightly-demo-csv, path: artifacts/demo.csv }

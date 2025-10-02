@@ -5,3 +5,5 @@ dist/
 coverage/
 .lt.log
 .lhr.log
+.cf_tunnel.log
+playwright-report/

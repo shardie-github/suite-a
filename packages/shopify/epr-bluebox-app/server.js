@@ -1,3 +1,4 @@
+import { cspReportOnly, healthEndpoints } from "./mw/security_extra.js";
 import api from "./routes/api.js";
 import bodyParser from "body-parser";
 import express from "express";
@@ -6,6 +7,8 @@ import gdpr from "./routes/gdpr.js";
 import { harden } from "./mw/security.js";
 console.log('shopify v3.4.4 server');
 harden(app);
+app.use(cspReportOnly);
+
 app.use("/gdpr", gdpr);
 app.use(notFound);
 app.use(onError);
@@ -16,3 +19,5 @@ let rq=0; app.use((req,_res,next)=>{ rq++; next(); });
 app.get("/metrics", (_req,res)=>res.type("text/plain").send("suitea_requests_total " + rq));
 
 app.post("/csp-report", (req,res)=>{ try{ console.log("CSP:", req.body); }catch{} res.sendStatus(204);});
+
+healthEndpoints(app);
