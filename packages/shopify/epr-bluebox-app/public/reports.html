@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Reports</title>
+<style>body{font-family:sans-serif;padding:16px;max-width:960px;margin:auto}table{width:100%;border-collapse:collapse}th,td{border:1px solid #eee;padding:8px}</style>
+</head><body>
+<h2>Suite A — Reports</h2>
+<label>Since <input id="since" type="date"></label>
+<label>Until <input id="until" type="date"></label>
+<label>Jurisdiction <input id="jur" placeholder="ON"></label>
+<button onclick="load()">Run</button>
+<a id="csv" href="#">Download CSV</a>
+<table id="t"><thead><tr><th>Jurisdiction</th><th>Material</th><th>Grams</th></tr></thead><tbody></tbody></table>
+<script>
+async function load(){
+  const s=document.getElementById('since').value||'2025-07-01';
+  const u=document.getElementById('until').value||new Date().toISOString().slice(0,10);
+  const j=document.getElementById('jur').value||'';
+  const url='/api/reports?since='+s+'&until='+u+(j?'&jurisdiction='+j:'');
+  document.getElementById('csv').href='/reports.csv?since='+s+'&until='+u+(j?'&jurisdiction='+j:'');
+  const res=await fetch(url); const js=await res.json();
+  const tb=document.querySelector('#t tbody'); tb.innerHTML='';
+  (js.rows||[]).forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${r.jurisdiction||''}</td><td>${r.material}</td><td>${r.grams}</td>`; tb.appendChild(tr); });
+}
+</script>
+</body></html>

@@ -1,0 +1,13 @@
+{
+  "name": "suite-a-slack-compliance-bot",
+  "version": "3.4.3",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@slack/bolt": "3.17.1",
+    "dotenv": "16.4.5",
+    "node-fetch": "3.3.2"
+  }
+}

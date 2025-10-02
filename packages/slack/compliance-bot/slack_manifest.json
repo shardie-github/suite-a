@@ -1,0 +1,40 @@
+{
+  "display_information": {
+    "name": "Suite A Reports"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "SuiteA Bot",
+      "always_online": true
+    },
+    "slash_commands": [
+      {
+        "command": "/report",
+        "url": "https://example.com/slack/commands/report",
+        "description": "Get EPR totals by jurisdiction",
+        "usage_hint": "ON 2025-01-01 2025-12-31",
+        "should_escape": false
+      }
+    ]
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": [
+        "commands",
+        "chat:write"
+      ]
+    }
+  },
+  "settings": {
+    "event_subscriptions": {
+      "request_url": "https://example.com/slack/events",
+      "bot_events": []
+    },
+    "interactivity": {
+      "is_enabled": false
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": false
+  }
+}
