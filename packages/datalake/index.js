@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import fs from 'node:fs';
 let mode='better'; let db, driver;
 try{
@@ -40,3 +41,6 @@ export function rangeTotals({since,until,jurisdiction}){
   return driver.all(q);
 }
 export default null;
+=======
+export function rangeTotals(){ return []; }
+>>>>>>> 95bdcb5 (feat: Suite A v3.4.4 sell-ready (docs+ngrok+slack))

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 export const dbPath = '.data/suitea.db';
@@ -21,3 +22,6 @@ export function all(sql){
     return row;
   });
 }
+=======
+export const dbPath = '.data/suitea.db';
+>>>>>>> 95bdcb5 (feat: Suite A v3.4.4 sell-ready (docs+ngrok+slack))

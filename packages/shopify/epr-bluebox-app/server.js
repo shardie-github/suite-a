@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import express from 'express'; import dotenv from 'dotenv'; import helmet from 'helmet'; import compression from 'compression';
 import rateLimit from 'express-rate-limit'; import { rangeTotals } from '../../datalake/index.js';
 dotenv.config();
@@ -18,3 +19,6 @@ app.get('/reports.csv', (req,res)=>{
 });
 app.get('/', (_q,res)=>res.redirect('/reports.html'));
 const port=process.env.PORT||3000; app.listen(port, ()=>console.log('shopify v3.4.3 :'+port));
+=======
+console.log('shopify v3.4.4 server');
+>>>>>>> 95bdcb5 (feat: Suite A v3.4.4 sell-ready (docs+ngrok+slack))

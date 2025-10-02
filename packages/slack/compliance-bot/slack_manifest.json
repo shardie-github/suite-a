@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "display_information": {
     "name": "Suite A Reports"
@@ -38,3 +39,6 @@
     "token_rotation_enabled": false
   }
 }
+=======
+{"display_information": {"name": "Suite A Reports"}}
+>>>>>>> 95bdcb5 (feat: Suite A v3.4.4 sell-ready (docs+ngrok+slack))

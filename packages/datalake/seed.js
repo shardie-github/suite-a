@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { randomUUID } from 'node:crypto';
 import { upsertOrder, addEprEvent } from './index.js';
 const regs=['ON','QC','BC','NY']; const mats=['paper.corrugated','plastic.ldpe'];
@@ -11,3 +12,6 @@ for(let i=0;i<60;i++){
   addEprEvent({ id: randomUUID(), order_id: id, material:'plastic.ldpe', grams: r(5,25), source:'seed', created_at:d, jurisdiction:reg });
 }
 console.log('Seeded demo data');
+=======
+console.log('seeded');
+>>>>>>> 95bdcb5 (feat: Suite A v3.4.4 sell-ready (docs+ngrok+slack))

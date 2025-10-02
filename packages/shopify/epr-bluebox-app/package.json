@@ -1,6 +1,10 @@
 {
   "name": "suite-a-epr-bluebox",
+<<<<<<< HEAD
   "version": "3.4.3",
+=======
+  "version": "3.4.4",
+>>>>>>> 95bdcb5 (feat: Suite A v3.4.4 sell-ready (docs+ngrok+slack))
   "type": "module",
   "scripts": {
     "start": "node server.js"

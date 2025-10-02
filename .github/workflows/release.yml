@@ -1,4 +1,5 @@
 name: release
+<<<<<<< HEAD
 on:
   push:
     tags:
@@ -18,3 +19,6 @@ jobs:
           files: ${{ env.ZIP_PATH }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+=======
+on: {push: {tags: ['v*.*.*']}}
+>>>>>>> 95bdcb5 (feat: Suite A v3.4.4 sell-ready (docs+ngrok+slack))
