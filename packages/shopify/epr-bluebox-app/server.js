@@ -1,3 +1,5 @@
+import express from "express";
+const app = express();
 import oauth from "./routes/oauth.js";
 import { sentryRequestHandler, sentryErrorHandler } from "../../common/sentry.js";
 import { cspReportOnly, healthEndpoints } from "./mw/security_extra.js";
@@ -27,3 +29,9 @@ healthEndpoints(app);
 app.use("/oauth", oauth);
 app.use(sentryErrorHandler);
 app.use(sentryErrorHandler);
+
+const port = process.env.PORT || 3000;
+app.listen(port, ()=>console.log("SuiteA shopify app on :" + port))
+  .on('error', (e)=>{ console.error("❌ server listen error", e); process.exit(1); });
+
+app.get("/readyz", (_req,res)=>res.json({ok:true, ts: Date.now()}));

@@ -7,3 +7,4 @@ coverage/
 .lhr.log
 .cf_tunnel.log
 playwright-report/
+logs/
