@@ -1,0 +1,25 @@
+name: screenshots
+on:
+  workflow_dispatch: {}
+  push:
+    tags: ['v*.*.*']
+jobs:
+  shots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: cd tools/screenshots && npm i && npm run install:pw
+      - name: Run shots (Pages URL if available)
+        env:
+          PUBLIC_URL: ${{ steps.pages.outputs.page_url || 'http://localhost:3000' }}
+        run: |
+          npm i --prefix packages/shopify/epr-bluebox-app || true
+          nohup node packages/shopify/epr-bluebox-app/server.js >/dev/null 2>&1 &
+          sleep 2
+          cd tools/screenshots && npm run shot
+      - uses: actions/upload-artifact@v4
+        with:
+          name: listing-assets
+          path: docs/assets/*.png

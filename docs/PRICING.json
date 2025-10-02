@@ -1,0 +1,7 @@
+{
+  "plans": [
+    {"name":"Free","price":0,"features":["Manual exports","7-day history","Community support"]},
+    {"name":"Pro","price":49,"features":["Scheduled reports","Slack /report","CSV export"]},
+    {"name":"Org","price":199,"features":["EPR templates","Evidence locker","SLA support"]}
+  ]
+}

@@ -1,1 +1,93 @@
-<!doctype html><html><body><h2>Suite A — Reports</h2></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Suite A — Reports</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://cdn.shopify.com">
+<link rel="stylesheet" href="https://unpkg.com/@shopify/polaris@12.10.0/build/esm/styles.css">
+<style>
+  body { background:#f6f6f7; }
+  .container { max-width: 1200px; margin: 16px auto; padding: 0 12px; }
+  .table-wrap { overflow-x:auto; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="Polaris-Page">
+    <div class="Polaris-Page__Content">
+      <div class="Polaris-Layout">
+        <div class="Polaris-Layout__Section">
+          <div class="Polaris-Card">
+            <div class="Polaris-Card__Header">
+              <h2 class="Polaris-Text--root Polaris-Text--headingLg">EPR & Compliance Reports</h2>
+            </div>
+            <div class="Polaris-Box" style="padding:12px;">
+              <form id="daterange" class="Polaris-FormLayout">
+                <div class="Polaris-FormLayout__Items">
+                  <div class="Polaris-FormLayout__Item">
+                    <div class="Polaris-TextField"><input id="from" class="Polaris-TextField__Input" placeholder="From YYYY-MM-DD" aria-label="From" /></div>
+                  </div>
+                  <div class="Polaris-FormLayout__Item">
+                    <div class="Polaris-TextField"><input id="to" class="Polaris-TextField__Input" placeholder="To YYYY-MM-DD" aria-label="To" /></div>
+                  </div>
+                  <div class="Polaris-FormLayout__Item">
+                    <button id="run" type="button" class="Polaris-Button Polaris-Button--primary"><span class="Polaris-Button__Content"><span class="Polaris-Button__Text">Run</span></span></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="Polaris-Box" style="padding:12px;">
+              <div id="summary" class="Polaris-Stack Polaris-Stack--spacingTight" aria-live="polite"></div>
+            </div>
+            <div class="Polaris-Card__Section table-wrap">
+              <table class="Polaris-DataTable__Table" id="tbl">
+                <thead><tr><th>SKU</th><th>Qty</th><th>Weight(kg)</th><th>EPR Fee($)</th></tr></thead>
+                <tbody id="tbody"><tr><td colspan="4">Run a report…</td></tr></tbody>
+              </table>
+            </div>
+            <div class="Polaris-Card__Section">
+              <div class="Polaris-Stack Polaris-Stack--spacingTight">
+                <a id="dlcsv" class="Polaris-Link" href="#">Download CSV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="Polaris-Layout__Section Polaris-Layout__Section--oneThird">
+          <div class="Polaris-Card">
+            <div class="Polaris-Card__Header"><h2 class="Polaris-Text--root Polaris-Text--headingMd">ROI</h2></div>
+            <div class="Polaris-Box" style="padding:12px;">
+              <p class="Polaris-Text--root Polaris-Text--bodyMd">Estimate savings vs. manual compliance and agency fees.</p>
+              <a class="Polaris-Link" href="/docs/site/index.html">Open calculator</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+</div>
+<script>
+const el = (id)=>document.getElementById(id);
+const q = (s)=>document.querySelector(s);
+function csv(rows){return rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\\n");}
+async function run(){
+  const from=el('from').value||'2025-01-01',to=el('to').value||'2025-12-31';
+  const r=await fetch(`/api/reports?from=${from}&to=${to}`,{headers:{'Accept':'application/json'}});
+  const data=await r.json();
+  const body=el('tbody'); body.innerHTML='';
+  let sumQty=0,sumFee=0,sumW=0;
+  data.rows.forEach(row=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${row.sku}</td><td>${row.qty}</td><td>${row.weightKg}</td><td>${row.fee.toFixed(2)}</td>`;
+    body.appendChild(tr);
+    sumQty+=row.qty; sumW+=row.weightKg; sumFee+=row.fee;
+  });
+  el('summary').innerHTML = `<div class="Polaris-Text--root Polaris-Text--bodyMd">Items: ${sumQty} • Weight: ${sumW.toFixed(2)}kg • Fees: $${sumFee.toFixed(2)}</div>`;
+  const rows=[["SKU","Qty","WeightKg","Fee"],...data.rows.map(x=>[x.sku,x.qty,x.weightKg,x.fee])];
+  const uri='data:text/csv;charset=utf-8,'+encodeURIComponent(csv(rows));
+  el('dlcsv').href=uri; el('dlcsv').download=`report_${from}_${to}.csv`;
+}
+el('run').addEventListener('click',run);
+</script>
+</body>
+</html>

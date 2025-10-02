@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Suite A ROI</title><style>body{font-family:system-ui;margin:32px;max-width:800px}</style></head>
+<body>
+<h1>ROI Calculator</h1>
+<p>Estimate monthly savings from automation.</p>
+<label>Orders/month <input id="orders" type="number" value="1000"></label><br>
+<label>Manual mins/order <input id="mins" type="number" value="2"></label><br>
+<label>Hourly cost ($) <input id="cost" type="number" value="25"></label><br>
+<label>Suite A subscription ($) <input id="price" type="number" value="99"></label><br>
+<button id="calc">Calculate</button>
+<pre id="out"></pre>
+<script>
+document.getElementById('calc').onclick = ()=>{
+  const o=+orders.value,m=+mins.value,c=+cost.value,p=+price.value;
+  const hours=(o*m)/60, savings=hours*c, net=savings-p;
+  out.textContent = `Labor hours saved: ${hours.toFixed(1)}h\nGross savings: $${savings.toFixed(2)}\nNet after subscription: $${net.toFixed(2)}`;
+};
+</script>
+</body></html>

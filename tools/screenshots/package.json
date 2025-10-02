@@ -1,0 +1,12 @@
+{
+  "name":"suitea-screenshots",
+  "private":true,
+  "type":"module",
+  "scripts":{
+    "install:pw":"npx playwright install --with-deps chromium || true",
+    "shot":"node take.js"
+  },
+  "dependencies": {
+    "@playwright/test":"1.48.2"
+  }
+}
