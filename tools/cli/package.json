@@ -1,0 +1,7 @@
+{
+  "name": "suitea-cli",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": { "suitea": "./index.js" },
+  "dependencies": { "node-fetch": "3.3.2" }
+}

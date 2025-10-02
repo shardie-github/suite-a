@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@sentry/node": "^8.26.0",
-    "pino": "^9.4.0"
+    "@sentry/node": "^8.55.0",
+    "pino": "^9.13.0"
   }
 }

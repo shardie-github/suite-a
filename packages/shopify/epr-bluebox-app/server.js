@@ -1,3 +1,5 @@
+import gdprExport from "./routes/gdpr_export.js";
+import { security } from "./mw/security_hard.js";
 import express from "express";
 const app = express();
 import oauth from "./routes/oauth.js";
@@ -11,6 +13,7 @@ import gdpr from "./routes/gdpr.js";
 import { harden } from "./mw/security.js";
 console.log('shopify v3.4.4 server');
 harden(app);
+security(app);
 app.use(sentryRequestHandler());
 app.use(cspReportOnly);
 
@@ -35,3 +38,5 @@ app.listen(port, ()=>console.log("SuiteA shopify app on :" + port))
   .on('error', (e)=>{ console.error("❌ server listen error", e); process.exit(1); });
 
 app.get("/readyz", (_req,res)=>res.json({ok:true, ts: Date.now()}));
+
+app.use("/gdpr", gdprExport);
