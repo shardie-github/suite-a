@@ -1,3 +1,4 @@
+/* apiKey.js — © Hardonia. MIT. */
 import fs from "fs"; import path from "path";
 const STORE = path.resolve(process.cwd(), ".data/apikeys.json");
 function load(){ try{ return JSON.parse(fs.readFileSync(STORE,"utf8")); }catch{ return {}; } }

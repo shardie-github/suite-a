@@ -1,3 +1,4 @@
+/* reports.js — © Hardonia. MIT. */
 export async function getReport(req,res){
   // demo data; replace with your datalake query
   const rows = [

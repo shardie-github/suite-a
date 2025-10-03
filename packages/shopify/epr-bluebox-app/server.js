@@ -1,3 +1,4 @@
+/* server.js — © Hardonia. MIT. */
 import gdprExport from "./routes/gdpr_export.js";
 import { security } from "./mw/security_hard.js";
 import express from "express";

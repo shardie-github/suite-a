@@ -1,0 +1,7 @@
+/* cspell.json — © Hardonia. MIT. */
+{
+  "version": "0.2",
+  "language": "en",
+  "words": ["Hardonia","multitenant","webhook","healthz","readyz","DSAR","roi","tmux","suitea","MinIO","cronjob","Shopify","Areviews"],
+  "ignorePaths": ["**/node_modules/**","**/.data/**","**/dist/**","**/logs/**"]
+}

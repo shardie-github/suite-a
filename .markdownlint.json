@@ -1,0 +1,7 @@
+/* .markdownlint.json — © Hardonia. MIT. */
+{
+  "default": true,
+  "MD013": { "line_length": 120, "code_blocks": false },
+  "MD033": false,
+  "MD041": false
+}

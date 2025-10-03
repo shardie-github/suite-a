@@ -1,3 +1,4 @@
+/* verify.js — © Hardonia. MIT. */
 import crypto from "crypto";
 export function verifySlack(req,res,next){
   const ts = req.headers["x-slack-request-timestamp"];

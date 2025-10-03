@@ -1,3 +1,4 @@
+/* PRICING.json — © Hardonia. MIT. */
 {
   "plans": [
     {"name":"Free","price":0,"features":["Manual exports","7-day history","Community support"]},

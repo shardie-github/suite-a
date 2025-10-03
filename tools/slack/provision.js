@@ -1,3 +1,4 @@
+/* provision.js — © Hardonia. MIT. */
 import fs from "fs";
 import fetch from "node-fetch";
 const token = process.env.SLACK_USER_TOKEN || process.env.SLACK_BOT_TOKEN;

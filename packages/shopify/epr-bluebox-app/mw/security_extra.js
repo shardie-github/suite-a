@@ -1,3 +1,4 @@
+/* security_extra.js — © Hardonia. MIT. */
 export function cspReportOnly(req,res,next){
   res.setHeader("Content-Security-Policy-Report-Only",
     "default-src 'self' https: data: blob:; " +

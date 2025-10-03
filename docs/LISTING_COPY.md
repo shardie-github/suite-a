@@ -1,3 +1,4 @@
+/* LISTING_COPY.md — © Hardonia. MIT. */
 # Listing Copy (Draft)
 **Solve compliance without headcount.** Auto-generate EPR and privacy reports, trigger Slack /report, and export CSVs in one click.
 

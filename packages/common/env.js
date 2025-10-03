@@ -1,3 +1,4 @@
+/* env.js — © Hardonia. MIT. */
 import { z } from "zod";
 const schema = z.object({
   NODE_ENV: z.enum(["development","test","production"]).default("production"),

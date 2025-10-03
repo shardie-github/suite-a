@@ -1,3 +1,4 @@
+/* shopifyHmac.js — © Hardonia. MIT. */
 import crypto from "crypto";
 export function verifyShopifyHmac(req,res,next){
   const secret = process.env.SHOPIFY_API_SECRET;

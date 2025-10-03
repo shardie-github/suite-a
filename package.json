@@ -1,3 +1,4 @@
+/* package.json — © Hardonia. MIT. */
 {
   "name": "suite-a-monorepo",
   "private": true,
@@ -8,8 +9,17 @@
   ],
   "scripts": {
     "fmt": "prettier -w .",
-    "lint": "eslint . --ext .js,.mjs",
-    "test": "node -e \"console.log('smoke ok')\""
+    "lint": "npx -y eslint .",
+    "test": "node -e \"console.log('smoke ok')\"",
+    "start:shopify": "PORT=3000 node packages/shopify/epr-bluebox-app/server.js",
+    "start:slack": "PORT=3001 node packages/slack/compliance-bot/app.js",
+    "ops:daemon": "bash tools/ops/daemon.sh",
+    "ops:cron": "bash tools/ops/cron.sh",
+    "format": "npx -y prettier --write .",
+    "format:check": "npx -y prettier --check .",
+    "md:lint": "npx -y markdownlint-cli '**/*.md' -i node_modules -i .data -i dist -i logs",
+    "spell": "npx -y cspell '**/*' --no-must-find-files",
+    "qa:repo": "npm run md:lint && npm run spell"
   },
   "devDependencies": {
     "eslint": "8.57.0",
@@ -23,5 +33,8 @@
     "cors": "2.8.5",
     "helmet": "7.1.0",
     "express-rate-limit": "7.3.1"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

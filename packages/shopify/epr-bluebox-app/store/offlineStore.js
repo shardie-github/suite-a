@@ -1,3 +1,4 @@
+/* offlineStore.js — © Hardonia. MIT. */
 import fs from "fs"; import path from "path";
 const STORE = path.resolve(process.cwd(), ".data/offline_tokens.json");
 export function getOfflineToken(shop){

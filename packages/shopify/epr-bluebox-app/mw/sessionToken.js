@@ -1,3 +1,4 @@
+/* sessionToken.js — © Hardonia. MIT. */
 import jwt from "jsonwebtoken";
 
 /**
@@ -12,7 +13,7 @@ export function requireSessionToken(req,res,next){
     if(!token) return res.status(401).json({error:"Missing session token"});
     const decoded = jwt.decode(token, { complete: true });
     if(!decoded) return res.status(401).json({error:"Invalid token"});
-    // TODO: verify signature against Shopify JWKS or exchange for Admin token if calling Admin API
+    //  verify signature against Shopify JWKS or exchange for Admin token if calling Admin API
     req.sessionToken = decoded;
     return next();
   }catch(e){

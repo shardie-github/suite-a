@@ -1,3 +1,4 @@
+/* security.js — © Hardonia. MIT. */
 import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";

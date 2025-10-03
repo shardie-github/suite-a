@@ -1,3 +1,4 @@
+/* lighthouse.yml — © Hardonia. MIT. */
 name: lighthouse
 on:
   workflow_dispatch: {}

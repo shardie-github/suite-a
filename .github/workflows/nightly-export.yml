@@ -1,3 +1,4 @@
+/* nightly-export.yml — © Hardonia. MIT. */
 name: nightly-export
 on:
   schedule: [{ cron: "13 2 * * *" }]

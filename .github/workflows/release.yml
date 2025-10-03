@@ -1,2 +1,3 @@
+/* release.yml — © Hardonia. MIT. */
 name: release
 on: {push: {tags: ['v*.*.*']}}

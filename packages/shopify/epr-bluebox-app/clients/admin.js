@@ -1,3 +1,4 @@
+/* admin.js — © Hardonia. MIT. */
 import fetch from "node-fetch";
 import { getOfflineToken } from "../store/offlineStore.js";
 

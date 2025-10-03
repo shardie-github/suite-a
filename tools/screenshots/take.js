@@ -1,3 +1,4 @@
+/* take.js — © Hardonia. MIT. */
 import { chromium } from "@playwright/test";
 import fs from "fs";
 const base = process.env.PUBLIC_URL || "http://localhost:3000";

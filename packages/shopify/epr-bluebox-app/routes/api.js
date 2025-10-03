@@ -1,3 +1,4 @@
+/* api.js — © Hardonia. MIT. */
 import express from "express";
 import { requireSessionToken } from "../mw/sessionToken.js";
 import { requireApiKey } from "../mw/apiKey.js";

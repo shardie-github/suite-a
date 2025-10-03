@@ -1,3 +1,4 @@
+/* telemetry.js — © Hardonia. MIT. */
 import { logger } from "./logger.js";
 export function captureError(err, context = {}) {
   // Sentry-compatible shape (shim)

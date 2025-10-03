@@ -1,3 +1,4 @@
+/* README.md — © Hardonia. MIT. */
 # Suite A — Compliance Without Headcount
 
 ![Hero](docs/assets/hero.png)

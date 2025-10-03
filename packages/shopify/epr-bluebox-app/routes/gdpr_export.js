@@ -1,3 +1,4 @@
+/* gdpr_export.js — © Hardonia. MIT. */
 import express from "express";
 export const gdprExport = express.Router();
 gdprExport.get("/export", async (req,res)=>{

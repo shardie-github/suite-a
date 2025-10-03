@@ -1,3 +1,4 @@
+/* oauth.js — © Hardonia. MIT. */
 import express from "express";
 import crypto from "crypto";
 import fetch from "node-fetch";

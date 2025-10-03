@@ -1,3 +1,4 @@
+/* CHANGELOG.md — © Hardonia. MIT. */
 
 
 ## 2025-10-02 v3.4.7

@@ -1,3 +1,4 @@
+/* package.json — © Hardonia. MIT. */
 {
   "dependencies": {
     "@sentry/node": "^8.55.0",

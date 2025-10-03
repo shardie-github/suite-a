@@ -1,3 +1,4 @@
+/* sentry.js — © Hardonia. MIT. */
 import * as Sentry from "@sentry/node";
 let inited=false;
 export function initSentry(){

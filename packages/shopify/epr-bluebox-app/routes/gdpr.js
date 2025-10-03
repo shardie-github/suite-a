@@ -1,3 +1,4 @@
+/* gdpr.js — © Hardonia. MIT. */
 import express from "express";
 import { verifyShopifyHmac } from "../mw/shopifyHmac.js";
 export const gdpr = express.Router();

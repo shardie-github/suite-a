@@ -1,3 +1,4 @@
+/* package.json — © Hardonia. MIT. */
 {
   "dependencies": {
     "body-parser": "^1.20.3",

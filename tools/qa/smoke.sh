@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
-BASE="${1:-http://localhost:3000}"
-echo "🩺 /healthz:";  curl -iS "$BASE/healthz" || true; echo
-echo "🟢 /readyz:";   curl -iS "$BASE/readyz" || true; echo
-echo "📈 /metrics:";  curl -sS "$BASE/metrics" | head -c 200; echo
-echo "🔐 OAuth URL:"; echo "$BASE/oauth/install?shop=<yourshop.myshopify.com>"
-echo "📄 /api/reports (401 expected):"; curl -iS "$BASE/api/reports?from=2025-01-01&to=2025-12-31" || true; echo
+SHOP="http://localhost:${PORT_SHOPIFY:-3000}"
+SLACK="http://localhost:${PORT_SLACK:-3001}"
+k(){ local url="$1" name="$2"; echo -e "\n### $name -> $url"; curl -fsSL "$url" | head -c 400 || true; echo; }
+echo "Suite A Smoke:"
+k "$SHOP/reports.html" "Shopify UI"
+k "$SHOP/healthz" "Shopify /healthz"
+k "$SHOP/readyz" "Shopify /readyz"
+k "$SLACK/healthz" "Slack /healthz"
