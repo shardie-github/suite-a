@@ -1,19 +1,19 @@
 /* openapi.yaml — © Hardonia. MIT. */
-openapi: 3.0.3
-info:
-  title: Suite A API
-  version: 1.0.0
-paths:
-  /api/reports:
-    get:
-      summary: Get compliance report rows
-      parameters:
-        - in: query
-          name: from
-          schema: { type: string, format: date }
-        - in: query
-          name: to
-          schema: { type: string, format: date }
-      responses:
-        "200":
-          description: OK
+openapi 3.0.3
+info
+  title Suite A API
+  version 1.0.0
+paths
+  /api/reports
+    get
+      summary Get compliance report rows
+      parameters
+        - in query
+          name from
+          schema { type string, format date }
+        - in query
+          name to
+          schema { type string, format date }
+      responses
+        "200"
+          description OK

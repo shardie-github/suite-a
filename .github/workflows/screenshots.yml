@@ -1,26 +1,26 @@
 /* screenshots.yml — © Hardonia. MIT. */
-name: screenshots
-on:
-  push:
-    tags: ['v*.*.*']
-jobs:
-  shots:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - run: |
+name screenshots
+on
+  push
+    tags ['v*.*.*']
+jobs
+  shots
+    runs-on ubuntu-latest
+    steps
+      - uses actions/checkout@v4
+      - uses actions/setup-node@v4
+        with { node-version '20' }
+      - run |
           npm i --prefix packages/shopify/epr-bluebox-app || true
           nohup node packages/shopify/epr-bluebox-app/server.js >/dev/null 2>&1 &
           sleep 2
-      - run: cd tools/screenshots && npm i && npx playwright install --with-deps chromium || true
-      - run: node tools/screenshots/take.js
-      - uses: actions/upload-artifact@v4
-        with: { name: listing-assets, path: docs/assets/*.png }
-      - name: Attach to Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: docs/assets/*.png
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run cd tools/screenshots && npm i && npx playwright install --with-deps chromium || true
+      - run node tools/screenshots/take.js
+      - uses actions/upload-artifact@v4
+        with { name listing-assets, path docs/assets/*.png }
+      - name Attach to Release
+        uses softprops/action-gh-release@v2
+        with
+          files docs/assets/*.png
+        env
+          GITHUB_TOKEN ${{ secrets.GITHUB_TOKEN }}

@@ -1,15 +1,15 @@
 /* ci.yml — © Hardonia. MIT. */
-name: ci
-on:
-  push: { branches: [ main ] }
-jobs:
-  lint-and-qa:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: '22.x' }
-      - run: npm ci || npm i
-      - run: npm run lint --if-present
-      - run: npm run format:check --if-present
-      - run: npm run qa:repo --if-present
+name ci
+on
+  push { branches [ main ] }
+jobs
+  lint-and-qa
+    runs-on ubuntu-latest
+    steps
+      - uses actions/checkout@v4
+      - uses actions/setup-node@v4
+        with { node-version '22.x' }
+      - run npm ci || npm i
+      - run npm run lint --if-present
+      - run npm run formatcheck --if-present
+      - run npm run qarepo --if-present

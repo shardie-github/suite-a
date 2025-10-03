@@ -1,11 +1,11 @@
 /* prom_rules.yml — © Hardonia. MIT. */
-groups:
-- name: suitea.rules
-  rules:
-  - record: job:suitea_requests:rate1m
-    expr: rate(suitea_requests_total[1m])
-  - alert: SuiteAServerDown
-    expr: up{job="suitea"} == 0
-    for: 2m
-    labels: { severity: critical }
-    annotations: { summary: "Suite A server down", description: "Probe failed for 2m" }
+groups
+- name suitea.rules
+  rules
+  - record jobsuitea_requestsrate1m
+    expr rate(suitea_requests_total[1m])
+  - alert SuiteAServerDown
+    expr up{job="suitea"} == 0
+    for 2m
+    labels { severity critical }
+    annotations { summary "Suite A server down", description "Probe failed for 2m" }

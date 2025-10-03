@@ -1,7 +1,6 @@
-/* package.json — © Hardonia. MIT. */
 {
-  "dependencies": {
-    "@sentry/node": "^8.55.0",
-    "pino": "^9.13.0"
+  "dependencies" {
+    "@sentry/node" "^8.55.0",
+    "pino" "^9.13.0"
   }
 }

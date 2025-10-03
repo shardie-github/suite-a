@@ -1,6 +1,6 @@
 /* build-pack.js — © Hardonia. MIT. */
 import fs from "fs"; import path from "path";
-const outDir = "docs/submission"; fs.mkdirSync(outDir,{recursive:true});
+const outDir = "docs/submission"; fs.mkdirSync(outDir,{recursivetrue});
 const files = [
   "docs/LISTING_COPY.md",
   "docs/PRIVACY_POLICY.md",

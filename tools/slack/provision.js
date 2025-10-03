@@ -7,11 +7,11 @@ const mf = "packages/slack/compliance-bot/slack_manifest.json";
 if(!fs.existsSync(mf)){ console.log("ℹ️ No manifest"); process.exit(0); }
 const manifest = fs.readFileSync(mf,'utf8');
 (async ()=>{
-  const r = await fetch("https://slack.com/api/apps.manifest.create", {
-    method:"POST",
-    headers:{ "Authorization":`Bearer ${token}`, "Content-Type":"application/json; charset=utf-8" },
-    body: JSON.stringify({ manifest: JSON.parse(manifest) })
+  const r = await fetch("https//slack.com/api/apps.manifest.create", {
+    method"POST",
+    headers{ "Authorization"`Bearer ${token}`, "Content-Type""application/json; charset=utf-8" },
+    body JSON.stringify({ manifest JSON.parse(manifest) })
   });
   const j = await r.json();
-  console.log("Slack provision resp:", j.ok ? "ok" : j.error || j);
+  console.log("Slack provision resp", j.ok ? "ok"  j.error || j);
 })();

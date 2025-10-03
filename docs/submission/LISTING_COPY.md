@@ -8,4 +8,4 @@
 - GDPR webhooks & HMAC
 - ROI calculator & docs site
 
-**Support**: support@hardonia.store
+**Support** support@hardonia.store

@@ -23,11 +23,11 @@ app.use(notFound);
 app.use(onError);
 app.use("/api", api);
 
-app.get("/healthz", (_req,res)=>res.json({ok:true, ts: Date.now()}));
+app.get("/healthz", (_req,res)=>res.json({oktrue, ts Date.now()}));
 let rq=0; app.use((req,_res,next)=>{ rq++; next(); });
 app.get("/metrics", (_req,res)=>res.type("text/plain").send("suitea_requests_total " + rq));
 
-app.post("/csp-report", (req,res)=>{ try{ console.log("CSP:", req.body); }catch{} res.sendStatus(204);});
+app.post("/csp-report", (req,res)=>{ try{ console.log("CSP", req.body); }catch{} res.sendStatus(204);});
 
 healthEndpoints(app);
 app.use("/oauth", oauth);
@@ -35,9 +35,9 @@ app.use(sentryErrorHandler);
 app.use(sentryErrorHandler);
 
 const port = process.env.PORT || 3000;
-app.listen(port, ()=>console.log("SuiteA shopify app on :" + port))
+app.listen(port, ()=>console.log("SuiteA shopify app on " + port))
   .on('error', (e)=>{ console.error("❌ server listen error", e); process.exit(1); });
 
-app.get("/readyz", (_req,res)=>res.json({ok:true, ts: Date.now()}));
+app.get("/readyz", (_req,res)=>res.json({oktrue, ts Date.now()}));
 
 app.use("/gdpr", gdprExport);

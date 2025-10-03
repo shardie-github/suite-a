@@ -1,8 +1,8 @@
 /* SuiteA.postman.json — © Hardonia. MIT. */
 {
-  "info": { "name": "Suite A", "_postman_id": "suite-a-collection", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
-  "item": [
-    { "name": "Reports", "request": { "method": "GET", "header": [ { "key":"Authorization", "value":"Bearer <session_token>" } ],
-      "url": { "raw": "http://localhost:3000/api/reports?from=2025-01-01&to=2025-12-31", "protocol": "http", "host": ["localhost"], "port":"3000", "path":["api","reports"], "query":[{"key":"from","value":"2025-01-01"},{"key":"to","value":"2025-12-31"}] } } }
+  "info" { "name" "Suite A", "_postman_id" "suite-a-collection", "schema" "https//schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "item" [
+    { "name" "Reports", "request" { "method" "GET", "header" [ { "key""Authorization", "value""Bearer <session_token>" } ],
+      "url" { "raw" "http//localhost3000/api/reports?from=2025-01-01&to=2025-12-31", "protocol" "http", "host" ["localhost"], "port""3000", "path"["api","reports"], "query"[{"key""from","value""2025-01-01"},{"key""to","value""2025-12-31"}] } } }
   ]
 }

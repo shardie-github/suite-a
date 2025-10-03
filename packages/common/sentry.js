@@ -7,8 +7,8 @@ export function initSentry(){
   if(!dsn) return;
   Sentry.init({
     dsn,
-    tracesSampleRate: Number(process.env.SENTRY_TRACES_RATE||0.1),
-    environment: process.env.NODE_ENV||"production"
+    tracesSampleRate Number(process.env.SENTRY_TRACES_RATE||0.1),
+    environment process.env.NODE_ENV||"production"
   });
   inited=true;
 }

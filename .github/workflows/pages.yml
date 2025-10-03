@@ -1,24 +1,24 @@
 /* pages.yml — © Hardonia. MIT. */
-name: pages
-on:
-  push:
-    tags: ['v*.*.*']
-  workflow_dispatch: {}
-permissions:
-  contents: write
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build docs site artifact
-        run: |
+name pages
+on
+  push
+    tags ['v*.*.*']
+  workflow_dispatch {}
+permissions
+  contents write
+jobs
+  deploy
+    runs-on ubuntu-latest
+    steps
+      - uses actions/checkout@v4
+      - name Build docs site artifact
+        run |
           mkdir -p dist
           cp -r docs/site/* dist/ || true
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
-          publish_branch: gh-pages
-          force_orphan: true
+      - name Deploy to gh-pages
+        uses peaceiris/actions-gh-pages@v3
+        with
+          github_token ${{ secrets.GITHUB_TOKEN }}
+          publish_dir dist
+          publish_branch gh-pages
+          force_orphan true

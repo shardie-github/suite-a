@@ -10,9 +10,9 @@ oauth.get("/install", async (req,res)=>{
   const shop = (req.query.shop||"").toString();
   if(!shop) return res.status(400).send("Missing shop");
   const state = crypto.randomBytes(16).toString("hex");
-  const redirectUri = `${process.env.APP_URL || "http://localhost:3000"}/oauth/callback`;
+  const redirectUri = `${process.env.APP_URL || "http//localhost3000"}/oauth/callback`;
   const scopes = (process.env.SHOPIFY_SCOPES || "read_products").split(",").join(",");
-  const url = `https://${shop}/admin/oauth/authorize?client_id=${process.env.SHOPIFY_API_KEY}`+
+  const url = `https//${shop}/admin/oauth/authorize?client_id=${process.env.SHOPIFY_API_KEY}`+
               `&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
   // In production store state in session; here we just pass it back for demo
   res.redirect(url);
@@ -23,9 +23,9 @@ oauth.get("/callback", async (req,res)=>{
   const { shop, code } = req.query;
   if(!shop || !code) return res.status(400).send("Missing parameters");
   try{
-    const tokenRes = await fetch(`https://${shop}/admin/oauth/access_token`, {
-      method:"POST", headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ client_id: process.env.SHOPIFY_API_KEY, client_secret: process.env.SHOPIFY_API_SECRET, code })
+    const tokenRes = await fetch(`https//${shop}/admin/oauth/access_token`, {
+      method"POST", headers {"Content-Type""application/json"},
+      body JSON.stringify({ client_id process.env.SHOPIFY_API_KEY, client_secret process.env.SHOPIFY_API_SECRET, code })
     });
     if(!tokenRes.ok){ return res.status(500).send(await tokenRes.text()); }
     const json = await tokenRes.json();
@@ -33,7 +33,7 @@ oauth.get("/callback", async (req,res)=>{
     setOfflineToken(String(shop), json.access_token);
     res.send("✅ App installed; offline token stored.");
   }catch(e){
-    res.status(500).send("OAuth error: " + e.message);
+    res.status(500).send("OAuth error " + e.message);
   }
 });
 
