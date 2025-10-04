@@ -143,3 +143,6 @@ app.get("/download/report.csv", (_req,res)=>{
 });
 
 app.get("/whoami", (req,res)=>res.json({role:req.role||null, flags:(process.env.FEATURE_FLAGS||"").split(",").filter(Boolean)}));
+
+
+/* v2.5.0: slack-modal-enabled */

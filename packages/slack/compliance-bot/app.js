@@ -89,3 +89,15 @@ try{
     });
   }
 }catch{}
+
+
+/* v2.4.0 — Privacy export */
+app.get("/privacy/export", (req,res)=>{
+  res.json({ ok:true, job:"export", id:Date.now() });
+});
+
+
+/* v2.4.0 — Privacy erase */
+app.post("/privacy/erase", (req,res)=>{
+  res.json({ ok:true, job:"erase", id:Date.now() });
+});
