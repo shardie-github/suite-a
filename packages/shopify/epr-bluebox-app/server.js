@@ -258,3 +258,22 @@ setInterval(()=>{ try {
   const cutoff = Date.now()-keepMs;
   while(DLQ.length && (DLQ[0].at || 0) < cutoff) DLQ.shift();
 } catch{} }, Number(process.env.PURGE_TICK_MS||60000));
+
+const tenantFromReq = (req)=> (req.headers["x-tenant-id"]||"public").toString().slice(0,64);
+const FLAGS = { premium_reports:true, beta_ai:true };
+const bucket = (req)=>{ const t=tenantFromReq(req); let h=0; for(const c of t) h=(h*31 + c.charCodeAt(0))&0xffffffff; return Math.abs(h%100); };
+const httpReqs = new prom.Counter({ name:"app_http_requests_total", help:"HTTP requests", labelNames:["tenant","route","code"] }); registry.registerMetric(httpReqs);
+const httpDur = new prom.Histogram({ name:"app_http_duration_ms", help:"HTTP time", labelNames:["tenant","route"] }); registry.registerMetric(httpDur);
+
+app.use((req,res,next)=>{
+  const t=tenantFromReq(req); const r=(req.route?.path)||req.path||"/";
+  const start=Date.now();
+  res.on("finish", ()=>{ try{ httpReqs.inc({tenant:t,route:r,code:String(res.statusCode)},1); httpDur.observe({tenant:t,route:r}, (Date.now()-start)); }catch{} });
+  next();
+});
+app.get("/flags", (req,res)=>res.json({flags:FLAGS,bucket:bucket(req),tenant:tenantFromReq(req)}));
+app.get("/config", (_req,res)=>res.json({
+  app: process.env.APP_NAME||"app",
+  version: process.env.GIT_TAG||"dev",
+  features: Object.keys(FLAGS)
+}));
