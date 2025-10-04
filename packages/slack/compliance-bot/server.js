@@ -1,0 +1,15 @@
+import express from "express";
+import helmet from "helmet";
+import compression from "compression";
+import cors from "cors";
+import prom from "prom-client";
+import dotenv from "dotenv";
+dotenv.config();
+const app = express();
+app.disable("x-powered-by");
+app.use(helmet()); app.use(compression()); app.use(cors());
+prom.collectDefaultMetrics({ prefix:"svc_", register: prom.register });
+app.get("/healthz", (_req,res)=>res.json({ok:true,ts:Date.now()}));
+app.get("/readyz",  (_req,res)=>res.json({ok:true,ts:Date.now()}));
+app.get("/metrics", async (_req,res)=>{ res.set("Content-Type", prom.register.contentType); res.end(await prom.register.metrics()); });
+const PORT = process.env.PORT || 3000; app.listen(PORT, ()=>console.log("up on", PORT));
