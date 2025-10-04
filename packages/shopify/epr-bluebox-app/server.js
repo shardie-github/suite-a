@@ -1,3 +1,5 @@
+const register = new client.Registry(); client.collectDefaultMetrics({ register });
+import client from "prom-client";
 /* server.js — © Hardonia. MIT. */
 import gdprExport from "./routes/gdpr_export.js";
 import { security } from "./mw/security_hard.js";
