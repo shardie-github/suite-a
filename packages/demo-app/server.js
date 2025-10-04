@@ -1,3 +1,4 @@
+import cron from "node-cron";
 import swaggerUi from "swagger-ui-express";
 import { randomUUID as uuid } from "crypto";
 import pino from "pino";
@@ -46,3 +47,16 @@ const OPENAPI = {
    "/metrics":{"get":{"responses":{"200":{"description":"metrics"}}}}
  }};
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(OPENAPI));
+
+/* simple JSON backup */
+import fsPromises from "fs/promises";
+app.get("/backupz", async (_req,res)=>{ try {
+  await fsPromises.mkdir("./.data", {recursive:true});
+  const path = "./.data/backup_"+Date.now()+".json";
+  await fsPromises.writeFile(path, JSON.stringify({ts:Date.now(), ok:true}));
+  res.json({ok:true, path});
+} catch(e){ res.status(500).json({error:String(e)}) }});
+
+cron.schedule("*/10 * * * *", ()=>{ try { console.log("heartbeat", Date.now()); } catch {} });
+
+app.get("/report.json", (_req,res)=>res.json({rows:[{id:1,status:"ok"}], ts:Date.now()}));

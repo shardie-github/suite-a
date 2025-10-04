@@ -47,3 +47,10 @@ const OPENAPI = {
    "/metrics":{"get":{"responses":{"200":{"description":"metrics"}}}}
  }};
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(OPENAPI));
+
+/* Slack /help pseudo-handler (bolt or express style) */
+try {
+  if (typeof app?.command === "function") {
+    app.command("/help", async ({ ack, respond }) => { await ack(); await respond("Available: /report, /help"); });
+  }
+} catch {}

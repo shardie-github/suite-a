@@ -46,3 +46,14 @@ const OPENAPI = {
    "/metrics":{"get":{"responses":{"200":{"description":"metrics"}}}}
  }};
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(OPENAPI));
+
+/* Stripe webhook scaffold (raw-body required in deps) */
+import getRawBody from "raw-body";
+app.post("/stripe/webhook", async (req,res)=>{
+  try {
+    const buf = await getRawBody(req);
+    // TODO: verify signature using STRIPE_WEBHOOK_SECRET
+    console.log("webhook bytes", buf.length);
+    res.json({ok:true});
+  } catch(e){ res.status(400).json({error:String(e)}) }
+});
