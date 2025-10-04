@@ -1,7 +1,11 @@
+import rateLimit from "express-rate-limit";
 const register = new client.Registry(); client.collectDefaultMetrics({ register });
 import client from "prom-client";
 import express from "express";
 const app = express();
+const limiter = rateLimit({ windowMs: 60_000, max: 300 });
+app.use(limiter);
+app.use((req,_res,next)=>{ try{ console.log(req.method, req.url); }catch{} next(); });
 /* app.js — © Hardonia. MIT. */
 import { verifySlack } from "./mw/verify.js";
 import express from "express";

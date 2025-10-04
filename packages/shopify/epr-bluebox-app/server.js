@@ -1,3 +1,4 @@
+import rateLimit from "express-rate-limit";
 const register = new client.Registry(); client.collectDefaultMetrics({ register });
 import client from "prom-client";
 /* server.js — © Hardonia. MIT. */
@@ -5,6 +6,9 @@ import gdprExport from "./routes/gdpr_export.js";
 import { security } from "./mw/security_hard.js";
 import express from "express";
 const app = express();
+const limiter = rateLimit({ windowMs: 60_000, max: 300 });
+app.use(limiter);
+app.use((req,_res,next)=>{ try{ console.log(req.method, req.url); }catch{} next(); });
 import oauth from "./routes/oauth.js";
 import { sentryRequestHandler, sentryErrorHandler } from "../../common/sentry.js";
 import { cspReportOnly, healthEndpoints } from "./mw/security_extra.js";
