@@ -1,3 +1,6 @@
+import http from "http";
+import helmet from "helmet";
+import compression from "compression";
 // feature flags / A-B
 const FLAGS=(process.env.FEATURE_FLAGS||"").split(",").filter(Boolean);
 function hasFlag(f){return FLAGS.includes(f);} 
@@ -15,6 +18,9 @@ import gdprExport from "./routes/gdpr_export.js";
 import { security } from "./mw/security_hard.js";
 import express from "express";
 const app = express();
+app.use(express.json({limit:"1mb"}));
+app.use(compression());
+app.use(helmet());
 // JWT_MAYBE: verify if public key provided
 import { createPublicKey, verify } from "crypto";
 const JWT_PEM=process.env.JWT_PUBLIC_PEM||"";
@@ -146,3 +152,20 @@ app.get("/whoami", (req,res)=>res.json({role:req.role||null, flags:(process.env.
 
 
 /* v2.5.0: slack-modal-enabled */
+
+const registry = new prom.Registry();
+prom.collectDefaultMetrics({ register: registry });
+
+const maintenance = (_req,res,next)=>{
+  if (process.env.MAINTENANCE === "1") {
+    if (_req.path === "/healthz" || _req.path === "/readyz") return next();
+    return res.status(503).json({ok:false, maintenance:true});
+  }
+  next();
+};
+app.use(maintenance);
+
+const PORT = process.env.PORT || 3000;
+const server = http.createServer(app).listen(PORT, ()=>console.log("app on",PORT));
+process.on("SIGTERM", ()=>server.close(()=>process.exit(0)));
+process.on("SIGINT",  ()=>server.close(()=>process.exit(0)));
