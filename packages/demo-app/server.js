@@ -99,3 +99,17 @@ app.post("/privacy/erase", async (req,res)=>{ try{
   await fsPromises.writeFile(file, JSON.stringify({user:req.query.user||"unknown",ts:Date.now(),status:"queued"}));
   res.json({ok:true,file});
 }catch(e){ res.status(500).json({error:String(e)}) }});
+
+app.get("/billing/portal", (_req,res)=>{
+  const url=process.env.CUSTOMER_PORTAL_URL||"";
+  if(!url) return res.status(501).json({error:"portal not configured"});
+  res.json({url});
+});
+
+app.get("/download/report.csv", (_req,res)=>{
+  res.set("Content-Type","text/csv");
+  res.set("Content-Disposition","attachment; filename=report.csv");
+  res.end("id,status\n1,ok\n");
+});
+
+app.get("/whoami", (req,res)=>res.json({role:req.role||null, flags:(process.env.FEATURE_FLAGS||"").split(",").filter(Boolean)}));

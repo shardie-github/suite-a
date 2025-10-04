@@ -79,3 +79,13 @@ app.get("/flags", (req,res)=>res.json({flags:FLAGS,bucket:bucket(req),role:req.r
 import fsPromises from "fs/promises";
 async function purge(){ const days=Number(process.env.RETENTION_DAYS||7); const cutoff=Date.now()-days*864e5; try{ await fsPromises.mkdir(".data",{recursive:true}); for(const f of await fsPromises.readdir(".data")){ const p=".data/"+f; const st=await fsPromises.stat(p).catch(()=>null); if(st && st.mtimeMs<cutoff) await fsPromises.rm(p,{force:true,recursive:true}); } }catch{} }
 setInterval(purge, 6*3600*1000).unref();
+
+/* open modal if Bolt available */
+try{
+  if (typeof app?.command==="function" && app?.client){
+    app.command("/report", async ({ack, body, client})=>{
+      await ack();
+      await client.views.open({ trigger_id: body.trigger_id, view: { type:"modal", title:{type:"plain_text",text:"Suite Report"}, close:{type:"plain_text",text:"Close"}, blocks:[{type:"section", text:{type:"mrkdwn", text:"Your report is being generated…"}}] }});
+    });
+  }
+}catch{}
