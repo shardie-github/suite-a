@@ -1,5 +1,14 @@
 {
-  "dependencies" {
-    "node-fetch" "^3.3.2"
-  }
+  "name": "slack",
+  "version": "1.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js || true",
+    "format": "npx -y prettier --write .",
+    "lint": "npx -y eslint . || true",
+    "md:lint": "npx -y markdownlint-cli \"**/*.md\" -i node_modules -i .data -i dist -i logs",
+    "qa:repo": "npm run md:lint || true"
+  },
+  "devDependencies": {}
 }

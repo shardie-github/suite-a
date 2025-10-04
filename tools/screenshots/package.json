@@ -1,12 +1,14 @@
 {
-  "name""suitea-screenshots",
-  "private"true,
-  "type""module",
-  "scripts"{
-    "installpw""npx playwright install --with-deps chromium || true",
-    "shot""node take.js"
+  "name": "screenshots",
+  "version": "1.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js || true",
+    "format": "npx -y prettier --write .",
+    "lint": "npx -y eslint . || true",
+    "md:lint": "npx -y markdownlint-cli \"**/*.md\" -i node_modules -i .data -i dist -i logs",
+    "qa:repo": "npm run md:lint || true"
   },
-  "dependencies" {
-    "@playwright/test""1.48.2"
-  }
+  "devDependencies": {}
 }
