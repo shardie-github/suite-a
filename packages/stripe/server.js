@@ -82,3 +82,17 @@ app.get("/flags", (req,res)=>res.json({flags:FLAGS,bucket:bucket(req),role:req.r
 import fsPromises from "fs/promises";
 async function purge(){ const days=Number(process.env.RETENTION_DAYS||7); const cutoff=Date.now()-days*864e5; try{ await fsPromises.mkdir(".data",{recursive:true}); for(const f of await fsPromises.readdir(".data")){ const p=".data/"+f; const st=await fsPromises.stat(p).catch(()=>null); if(st && st.mtimeMs<cutoff) await fsPromises.rm(p,{force:true,recursive:true}); } }catch{} }
 setInterval(purge, 6*3600*1000).unref();
+
+import fsPromises from "fs/promises";
+app.post("/privacy/export", async (req,res)=>{ try{
+  await fsPromises.mkdir(".data/privacy",{recursive:true});
+  const file=".data/privacy/export_"+Date.now()+".json";
+  await fsPromises.writeFile(file, JSON.stringify({user:req.query.user||"unknown",ts:Date.now()}));
+  res.json({ok:true,file});
+}catch(e){ res.status(500).json({error:String(e)}) }});
+app.post("/privacy/erase", async (req,res)=>{ try{
+  await fsPromises.mkdir(".data/privacy",{recursive:true});
+  const file=".data/privacy/erase_"+Date.now()+".json";
+  await fsPromises.writeFile(file, JSON.stringify({user:req.query.user||"unknown",ts:Date.now(),status:"queued"}));
+  res.json({ok:true,file});
+}catch(e){ res.status(500).json({error:String(e)}) }});
