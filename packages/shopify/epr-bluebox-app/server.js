@@ -232,3 +232,29 @@ const jwtAuthOptional = (req,res,next)=>{
   } catch { return res.status(401).json({ok:false, reason:"bad_token"}); }
 };
 app.use(jetAuthGuard?jetAuthGuard:jwtAuthOptional); // keep stable reference if user defines one
+
+/* Simple retry queue + DLQ (memory, demo-safe) */
+const DLQ = [];
+const RETRIES = [];
+function enqueueRetry(evt){ RETRIES.push({...evt, tries:(evt.tries||0)+1, at:Date.now()}); }
+app.post("/webhooks/in", (req,res)=>{
+  const ok = process.env.WEBHOOK_ACCEPT_ALL==="1" || Math.random()>0.2;
+  if(!ok){
+    if((req.body||{}).tries>2){ DLQ.push(req.body); return res.status(202).json({ok:false, routed:"dlq"}); }
+    enqueueRetry(req.body||{});
+    return res.status(202).json({ok:false, routed:"retry"});
+  }
+  res.json({ok:true});
+});
+app.get("/webhooks/dlq", (_req,res)=>res.json({count:DLQ.length, items:DLQ.slice(-50)}));
+app.post("/webhooks/retry", (_req,res)=>{
+  let n=0;
+  while(RETRIES.length){ const e = RETRIES.shift(); if(!e) break; n++; /* deliver somewhere */ }
+  res.json({ok:true, drained:n});
+});
+/* background purge tick */
+setInterval(()=>{ try {
+  const keepMs = Number(process.env.RETENTION_MS||86400000);
+  const cutoff = Date.now()-keepMs;
+  while(DLQ.length && (DLQ[0].at || 0) < cutoff) DLQ.shift();
+} catch{} }, Number(process.env.PURGE_TICK_MS||60000));
