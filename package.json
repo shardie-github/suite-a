@@ -12,7 +12,11 @@
     "cspell": "^8.14.2",
     "eslint": "^8.57.0",
     "markdownlint-cli": "^0.41.0",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "prisma": "^5.22.0"
   },
-  "version": "2.2.0"
+  "version": "2.2.0",
+  "dependencies": {
+    "@prisma/client": "^5.22.0"
+  }
 }

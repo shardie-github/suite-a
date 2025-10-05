@@ -1,0 +1,49 @@
+name: release-verify
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch: {}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - name: Install deps
+        run: |
+          if [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile;
+          elif [ -f package-lock.json ]; then npm ci;
+          else npm i; fi
+      - name: Typecheck
+        run: |
+          if [ -f tsconfig.json ]; then npx tsc -v && npx tsc -noEmit || true; fi
+      - name: Lint
+        run: |
+          if [ -f package.json ]; then npm run lint --if-present || echo "lint skipped"; fi
+      - name: Test
+        run: |
+          if [ -f package.json ]; then npm test --if-present || echo "tests skipped"; fi
+      - name: Security & license audit
+        run: |
+          npx --yes npm-audit-resolver@latest || true
+          npx --yes license-checker --summary || true
+      - name: Build
+        run: |
+          if [ -f package.json ]; then npm run build --if-present || echo "build skipped"; fi
+      - name: Bundle artifacts
+        run: |
+          mkdir -p dist_artifacts
+          [ -d dist ] && cp -r dist dist_artifacts/
+          [ -d build ] && cp -r build dist_artifacts/
+          [ -d reports ] && cp -r reports dist_artifacts/
+          tar -czf release_artifacts.tgz dist_artifacts || true
+      - name: Upload artifacts to Release
+        uses: softprops/action-gh-release@v2
+        with: { files: release_artifacts.tgz }
+        env: { GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} }

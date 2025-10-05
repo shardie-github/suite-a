@@ -1,0 +1,13 @@
+PRAGMA foreign_keys=OFF;
+CREATE TABLE IF NOT EXISTS User ( id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, passwordHash TEXT NOT NULL, name TEXT, createdAt TEXT NOT NULL DEFAULT (datetime('now')), updatedAt TEXT NOT NULL );
+CREATE TRIGGER IF NOT EXISTS user_updatedAt AFTER UPDATE ON User FOR EACH ROW BEGIN UPDATE User SET updatedAt = datetime('now') WHERE id = NEW.id; END;
+CREATE TABLE IF NOT EXISTS Org ( id TEXT PRIMARY KEY, name TEXT NOT NULL, createdAt TEXT NOT NULL DEFAULT (datetime('now')), updatedAt TEXT NOT NULL );
+CREATE TRIGGER IF NOT EXISTS org_updatedAt AFTER UPDATE ON Org FOR EACH ROW BEGIN UPDATE Org SET updatedAt = datetime('now') WHERE id = NEW.id; END;
+CREATE TABLE IF NOT EXISTS Membership ( id TEXT PRIMARY KEY, userId TEXT NOT NULL, orgId TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'MEMBER', createdAt TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(userId, orgId), FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE, FOREIGN KEY (orgId) REFERENCES Org(id) ON DELETE CASCADE );
+CREATE TABLE IF NOT EXISTS Session ( id TEXT PRIMARY KEY, userId TEXT NOT NULL, token TEXT NOT NULL UNIQUE, expiresAt TEXT NOT NULL, createdAt TEXT NOT NULL DEFAULT (datetime('now')), FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE );
+CREATE TABLE IF NOT EXISTS ApiKey ( id TEXT PRIMARY KEY, userId TEXT NOT NULL, key TEXT NOT NULL UNIQUE, label TEXT, createdAt TEXT NOT NULL DEFAULT (datetime('now')), FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE );
+CREATE TABLE IF NOT EXISTS Subscription ( id TEXT PRIMARY KEY, orgId TEXT NOT NULL, stripeCustomerId TEXT, stripeSubscriptionId TEXT, plan TEXT NOT NULL DEFAULT 'free', status TEXT NOT NULL DEFAULT 'inactive', currentPeriodEnd TEXT, createdAt TEXT NOT NULL DEFAULT (datetime('now')), updatedAt TEXT NOT NULL );
+CREATE TRIGGER IF NOT EXISTS subscription_updatedAt AFTER UPDATE ON Subscription FOR EACH ROW BEGIN UPDATE Subscription SET updatedAt = datetime('now') WHERE id = NEW.id; END;
+CREATE TABLE IF NOT EXISTS FeatureFlag ( id TEXT PRIMARY KEY, orgId TEXT NOT NULL, name TEXT NOT NULL, enabled INTEGER NOT NULL DEFAULT 0, createdAt TEXT NOT NULL DEFAULT (datetime('now')), updatedAt TEXT NOT NULL, UNIQUE(orgId, name), FOREIGN KEY (orgId) REFERENCES Org(id) ON DELETE CASCADE );
+CREATE TRIGGER IF NOT EXISTS featureflag_updatedAt AFTER UPDATE ON FeatureFlag FOR EACH ROW BEGIN UPDATE FeatureFlag SET updatedAt = datetime('now') WHERE id = NEW.id; END;
+PRAGMA foreign_keys=ON;

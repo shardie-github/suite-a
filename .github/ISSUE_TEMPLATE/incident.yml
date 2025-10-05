@@ -1,0 +1,21 @@
+name: Incident
+description: Production incident report
+labels: [incident, P1]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What failed, scope, current impact
+  - type: input
+    id: link
+    attributes:
+      label: Run/URL
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Timeline
+  - type: textarea
+    id: mitigations
+    attributes:
+      label: Mitigations & next steps

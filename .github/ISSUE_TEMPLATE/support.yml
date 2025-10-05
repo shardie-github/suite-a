@@ -1,0 +1,17 @@
+name: Support
+description: Customer support request
+labels: [support]
+body:
+  - type: input
+    id: email
+    attributes:
+      label: Customer email
+  - type: textarea
+    id: question
+    attributes:
+      label: Question/Issue
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: [P1, P2, P3]

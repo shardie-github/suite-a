@@ -1,0 +1,50 @@
+name: ops-monitor
+on:
+  schedule: [{ cron: "*/5 * * * *" }]
+  workflow_dispatch: {}
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    permissions: { contents: write, issues: write }
+    steps:
+      - name: Build endpoint list
+        id: gen
+        run: |
+          EKS="${MONITORED_ENDPOINTS:-https://example.com/healthz,https://status.example.com/live}"
+          printf "endpoints=%s\n" "$EKS" >> $GITHUB_OUTPUT
+      - name: Probe endpoints
+        id: probe
+        run: |
+          IFS=',' read -r -a EPS <<< "${{ steps.gen.outputs.endpoints }}"
+          FAILS=""
+          for url in "${EPS[@]}"; do
+            start=$(date +%s%3N)
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 8 "$url") || code=000
+            end=$(date +%s%3N); rt=$((end-start))
+            echo "${url} => ${code} in ${rt}ms"
+            if [ "$code" != "200" ] || [ "$rt" -gt 800 ]; then
+              FAILS+="$url ($code ${rt}ms)\n"
+            fi
+          done
+          printf "%b" "$FAILS" > fails.txt
+          if [ -s fails.txt ]; then echo "has_fails=true" >> $GITHUB_OUTPUT; else echo "has_fails=false" >> $GITHUB_OUTPUT; fi
+      - name: Raise incident issue when failing
+        if: steps.probe.outputs.has_fails == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('fails.txt','utf8');
+            const title = `INCIDENT: Health check failures at ${new Date().toISOString()}`;
+            await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body: "Failures:\n\n"+body });
+      - name: Optional email via Resend (if key exists)
+        if: steps.probe.outputs.has_fails == 'true'
+        env: { RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }} }
+        run: |
+          if [ -n "$RESEND_API_KEY" ] && [ "$RESEND_API_KEY" != "<TODO>" ]; then
+            subj="[Ops] Health check failures ${GITHUB_REPOSITORY}"
+            body=$(sed 's/"/\\"/g' fails.txt)
+            curl -s https://api.resend.com/emails \
+              -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" \
+              -d "{\"from\":\"Hardonia Ops <ops@hardonia.store>\",\"to\":[\"hardoniastore@gmail.com\"],\"subject\":\"$subj\",\"text\":\"$body\"}" >/dev/null || true
+          fi

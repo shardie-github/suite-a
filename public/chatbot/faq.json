@@ -1,0 +1,17 @@
+{
+  "general": [
+    { "q": "What is TokPulse?", "a": "TokPulse automates TikTok/Meta ad intelligence and daily CapCut-ready creative packs." },
+    { "q": "How do I connect TikTok?", "a": "Add TikTok tokens in GitHub Secrets or use the in-app connection screen; intel job runs twice daily." },
+    { "q": "Will placeholders break anything?", "a": "No. Jobs safely no-op until <TODO> values are replaced with real credentials." }
+  ],
+  "suiteA": [
+    { "q": "Install the Shopify app?", "a": "In Shopify Admin → Apps → Install. OAuth + HMAC verify are automatic." },
+    { "q": "Billing & trial", "a": "Stripe handles billing; default 7-day trial unless configured otherwise." }
+  ],
+  "suiteB": [
+    { "q": "API limits?", "a": "120 requests/min per IP by default; request an increase via support." }
+  ],
+  "suiteC": [
+    { "q": "Android support?", "a": "Yes. Use Termux one-shots; logs in ~/.local/var/log; never force-push." }
+  ]
+}

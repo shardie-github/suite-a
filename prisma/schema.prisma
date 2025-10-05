@@ -1,0 +1,91 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  memberships  Membership[]
+  sessions     Session[]
+  apiKeys      ApiKey[]
+}
+
+model Org {
+  id            String         @id @default(cuid())
+  name          String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  memberships   Membership[]
+  subscriptions Subscription[]
+  featureFlags  FeatureFlag[]
+}
+
+model Membership {
+  id        String   @id @default(cuid())
+  userId    String
+  orgId     String
+  role      String   @default("MEMBER")
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  org  Org  @relation(fields: [orgId], references: [id])
+
+  @@unique([userId, orgId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  userId    String
+  key       String   @unique
+  label     String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id                   String    @id @default(cuid())
+  orgId                String
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  plan                 String    @default("free")
+  status               String    @default("inactive")
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  org Org @relation(fields: [orgId], references: [id])
+}
+
+model FeatureFlag {
+  id        String   @id @default(cuid())
+  orgId     String
+  name      String
+  enabled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  org Org @relation(fields: [orgId], references: [id])
+
+  @@unique([orgId, name])
+}

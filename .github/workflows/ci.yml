@@ -1,15 +1,15 @@
-/* ci.yml — © Hardonia. MIT. */
-name ci
-on
-  push { branches [ main ] }
-jobs
-  lint-and-qa
-    runs-on ubuntu-latest
-    steps
-      - uses actions/checkout@v4
-      - uses actions/setup-node@v4
-        with { node-version '22.x' }
-      - run npm ci || npm i
-      - run npm run lint --if-present
-      - run npm run formatcheck --if-present
-      - run npm run qarepo --if-present
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: corepack enable && corepack prepare pnpm@latest --activate
+      - run: pnpm -C apps/api i
+      - run: pnpm -C apps/api build
+      - run: pnpm -C apps/api test

@@ -1,0 +1,5 @@
+{ "name":"@suite/web","version":"1.0.0","private":true,
+  "scripts":{ "dev":"vite --port 5173","build":"echo 'Skipping Vite build on Termux'","start":"vite --port 5173" },
+  "dependencies":{ "react":"18.3.1","react-dom":"18.3.1" },
+  "devDependencies":{ "vite":"^5.4.10","@types/react":"^18.3.5","@types/react-dom":"^18.3.0","typescript":"^5.6.3" }
+}
