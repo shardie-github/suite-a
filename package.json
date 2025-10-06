@@ -9,7 +9,7 @@
     "qa:repo": "npm run md:lint || true"
   },
   "devDependencies": {
-    "cspell": "^8.14.2",
+    "cspell": "^9.2.1",
     "eslint": "^8.57.0",
     "markdownlint-cli": "^0.41.0",
     "prettier": "^3.3.3"
